@@ -29,12 +29,14 @@
 </head>
 <body>
     <div id="button"></div>
+    <div id="bugwidget"></div>
     <script>
         $(function() {
-            $("#button").dxButton({
-                text: 'Click me!',
-                onClick: function() { alert("clicked"); }
-            });
+            // $("#button").dxButton({
+            //     text: 'Click me!',
+            //     onClick: function() { alert("clicked"); }
+            // });
+            $("#bugwidget").dxBugWidget({testProp: 'sas'})
         });
     </script>
 </body>

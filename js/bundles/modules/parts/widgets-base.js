@@ -54,6 +54,7 @@ ui.dxRangeSlider = require('../../../ui/range_slider');
 ui.dxResizable = require('../../../ui/resizable');
 ui.dxResponsiveBox = require('../../../ui/responsive_box');
 ui.dxScrollView = require('../../../ui/scroll_view');
+ui.dxBugWidget = require('../../../renovation/ui/bug_widget.j');
 ui.dxSelectBox = require('../../../ui/select_box');
 ui.dxSlider = require('../../../ui/slider');
 ui.dxSpeedDialAction = require('../../../ui/speed_dial_action');
