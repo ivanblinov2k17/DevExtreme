@@ -12,17 +12,12 @@ export class WidgetProps {
 }
 
 const viewFunction = (model: BugWidget): JSX.Element => (
-  <div {...{
-    ...model.restAttributes,
-    className: 'test-className',
-  }}
-  >
-    {model.props.testProp}
-    kek
-  </div>
+  <div {... model.someAttrs} className="divClass">asd</div>
 );
 
 @Component({ view: viewFunction, jQuery: { register: true } })
 export class BugWidget extends JSXComponent(WidgetProps) {
-
+  someAttrs = {
+    className: 'getterClass',
+  };
 }

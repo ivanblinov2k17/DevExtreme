@@ -4,6 +4,7 @@
 module.exports = [
     { name: 'Button', pathInRenovationFolder: 'ui/button.j', pathInJSFolder: 'ui/button.js' },
     { name: 'CheckBox', pathInRenovationFolder: 'ui/check_box.j', pathInJSFolder: 'ui/check_box.js' },
+    { name: 'BugWidget', pathInRenovationFolder: 'ui/bug_widget.j', pathInJSFolder: 'ui/bug_widget.js' },
     // { name: 'Widget', pathInRenovationFolder: 'ui/widget.j' },
     // { name: 'ScrollView', pathInRenovationFolder: 'ui/scroll_view/scroll_view.j', pathInJSFolder: 'ui/scroll_view.js' },
     // { name: 'Scrollable', pathInRenovationFolder: 'ui/scroll_view/scrollable.j', pathInJSFolder: 'ui/scroll_view/ui.scrollable.js', pathToWrapper: '/testing/helpers/renovationScrollableHelper.js' },

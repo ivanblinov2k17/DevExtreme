@@ -199,7 +199,7 @@ export default class ComponentWrapper extends DOMComponent<Record<string, any>> 
           return updatedAttributes;
         }, {}),
       };
-      this._storedClasses = this.$element()[0].getAttribute('class') || '';
+      this._storedClasses = this.$element()[0].getAttribute('class');
     }
     const elemStyle: CSSStyleDeclaration = this.$element()[0].style;
 
@@ -275,17 +275,18 @@ export default class ComponentWrapper extends DOMComponent<Record<string, any>> 
       options[template] = this._componentTemplates[template];
     });
 
+    const className = [
+      ...(this.elementAttr.class || '').split(' '),
+      ...(elementAttr.class || '').split(' '),
+    ]
+      .filter((c, i, a) => c && a.indexOf(c) === i)
+      .join(' ')
+      .trim();
     return {
       ...options,
       ...this.elementAttr,
       ...elementAttr,
-      className: [
-        ...(this.elementAttr.class || '').split(' '),
-        ...(elementAttr.class || '').split(' '),
-      ]
-        .filter((c, i, a) => c && a.indexOf(c) === i)
-        .join(' ')
-        .trim(),
+      className: className === '' ? undefined : className,
       class: '',
       ...this._actionsMap,
     };
