@@ -457,7 +457,7 @@ export const ColumnsView = modules.View.inherit(columnStateMixin).inherit({
                 templateDeferred.resolve();
             }
         };
-
+        // debugger;
         if(renderingTemplate) {
             options.component = that.component;
 
@@ -472,6 +472,8 @@ export const ColumnsView = modules.View.inherit(columnStateMixin).inherit({
             } else {
                 that._delayedTemplates.push({ template: renderingTemplate, options: templateOptions, async: async });
             }
+            options.templateDeferreds = options.templateDeferreds || [];
+            options.templateDeferreds.push(templateDeferred);
             if(change) {
                 change.templateDeferreds = change.templateDeferreds || [];
                 change.templateDeferreds.push(templateDeferred);
@@ -537,7 +539,14 @@ export const ColumnsView = modules.View.inherit(columnStateMixin).inherit({
         const changeType = options.change && options.change.changeType;
         const $table = this._createTable(options.columns, changeType === 'append' || changeType === 'prepend' || changeType === 'update');
 
-        this._renderRows($table, options);
+        const renderRowPromises = this._renderRows($table, options);
+        Promise.all(renderRowPromises).then(()=>{
+
+            this._$element.find('.dx-datagrid-table').remove();
+            this._$element.append($table);
+
+            // this._$element.css('height', '');
+        });
 
         return $table;
     },
@@ -548,12 +557,19 @@ export const ColumnsView = modules.View.inherit(columnStateMixin).inherit({
         const columnIndices = options.change && options.change.columnIndices || [];
         const changeTypes = options.change && options.change.changeTypes || [];
 
+        const deferredRows = [];
         for(let i = 0; i < rows.length; i++) {
-            that._renderRow($table, extend({ row: rows[i], columnIndices: columnIndices[i], changeType: changeTypes[i] }, options));
+            deferredRows.push(that._renderRow($table, extend({
+                row: rows[i],
+                columnIndices: columnIndices[i],
+                changeType: changeTypes[i]
+            }, options)));
         }
+        return deferredRows;
     },
 
     _renderRow: function($table, options) {
+        options.change = {};
         if(!options.columnIndices) {
             options.row.cells = [];
         }
@@ -563,12 +579,17 @@ export const ColumnsView = modules.View.inherit(columnStateMixin).inherit({
         if(options.changeType !== 'remove') {
             this._renderCells($row, options);
         }
-        this._appendRow($table, $wrappedRow);
+        const result = new Promise((res) => when.apply(this, options.change.templateDeferreds).done(() => {
+            this._appendRow($table, $wrappedRow);
+            res();
+        }));
+
         const rowOptions = extend({ columns: options.columns }, options.row);
 
         this._addWatchMethod(rowOptions, options.row);
 
         this._rowPrepared($wrappedRow, rowOptions, options.row);
+        return result;
     },
 
     _needRenderCell: function(columnIndex, columnIndices) {

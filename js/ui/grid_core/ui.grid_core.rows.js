@@ -294,7 +294,7 @@ export const rowsModule = {
                 _renderLoadPanel: gridCoreUtils.renderLoadPanel,
 
                 _renderContent: function(contentElement, tableElement) {
-                    contentElement.empty().append(tableElement);
+                    // contentElement.empty().append(tableElement);
 
                     return this._findContentElement();
                 },
@@ -593,7 +593,7 @@ export const rowsModule = {
                     const that = this;
                     const scrollingMode = that.option('scrolling.mode');
 
-                    that.callBase($table, extend({
+                    const resPromise = that.callBase($table, extend({
                         scrollingMode: scrollingMode
                     }, options));
 
@@ -603,6 +603,7 @@ export const rowsModule = {
                     if(!that._hasHeight) {
                         that.updateFreeSpaceRowHeight($table);
                     }
+                    return resPromise;
                 },
 
                 _renderDataRowByTemplate($table, options, dataRowTemplate) {
@@ -624,7 +625,7 @@ export const rowsModule = {
                     } else if((row.rowType === 'data' || row.rowType === 'group') && !isDefined(row.groupIndex) && rowTemplate) {
                         this.renderTemplate($table, rowTemplate, extend({ columns: options.columns }, row), true);
                     } else {
-                        this.callBase($table, options);
+                        return this.callBase($table, options);
                     }
                 },
 

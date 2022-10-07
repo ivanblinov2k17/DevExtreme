@@ -228,9 +228,10 @@ export const columnHeadersModule = {
                     const that = this;
 
                     if(that._dataController.isLoaded() || that._hasRowElements) {
-                        that.callBase.apply(that, arguments);
+                        const resPromise = that.callBase.apply(that, arguments);
                         that._hasRowElements = true;
-                    }
+                        return resPromise;
+                    } else { return []; }
                 },
 
                 _getRowVisibleColumns: function(rowIndex) {

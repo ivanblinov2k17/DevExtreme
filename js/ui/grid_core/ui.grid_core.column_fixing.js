@@ -158,7 +158,7 @@ const baseFixedColumns = {
         let fixedCorrection;
         let cells = options.row.cells;
 
-        this.callBase.apply(this, arguments);
+        const resPromise = this.callBase.apply(this, arguments);
 
         if(this._isFixedTableRendering && cells && cells.length) {
             fixedCorrection = 0;
@@ -174,6 +174,7 @@ const baseFixedColumns = {
                 cells[i + fixedCorrection] = fixedCells[i];
             }
         }
+        return resPromise;
     },
 
     _createCell: function(options) {
