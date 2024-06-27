@@ -21,5 +21,18 @@
       DXDemoTheme();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.11/js/iframeResizer.contentWindow.min.js"></script>
-  <script src="runtime.b10d900cf9467b02.js" type="module"></script><script src="polyfills.fa4a2545a9eab07b.js" type="module"></script><script src="main.7aca9db5662f2195.js" type="module"></script></body>
+  
+      <script>
+        window.onload = function() {
+          var scripts = ["polyfills.fa4a2545a9eab07b.js","runtime.b10d900cf9467b02.js","main.7aca9db5662f2195.js"];
+
+          scripts.forEach(function(src) {
+            var script = document.createElement('script');
+            script.src = src;
+            script.type = 'module';
+            document.body.appendChild(script);
+          });
+        };
+      </script>
+    </body>
 </html>
