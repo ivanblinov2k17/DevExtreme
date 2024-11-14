@@ -1,61 +1,50 @@
 $(() => {
-  const formatOutput = (value, valueType) => {
-    const formattedValue = valueType === 'html' ? prettierFormat(value) : value;
-    $('.value-content').text(formattedValue);
+  const updateValueContent = (value) => {
+    $('.value-content').text(value);
+  };
+
+  const converter = {
+    toHtml(value) {
+      const result = unified()
+        .use(remarkParse)
+        .use(remarkRehype)
+        .use(rehypeStringify)
+        .processSync(value)
+        .toString();
+
+      return result;
+    },
+    fromHtml(value) {
+      const result = window.unified()
+        .use(rehypeParse, { fragment: true })
+        .use(rehypeRemark)
+        .use(remarkStringify)
+        .processSync(value)
+        .toString();
+
+      return result;
+    }
   };
 
   const editorInstance = $('.html-editor').dxHtmlEditor({
     height: 300,
+    converter,
     value: markup,
     toolbar: {
       items: [
         'undo', 'redo', 'separator',
+        'bold', 'italic',
         {
-          name: 'size',
-          acceptedValues: ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'],
-          options: {
-            inputAttr: {
-              'aria-label': 'Font size',
-            },
-          },
+          name: 'header',
+          acceptedValues: [false, 1, 2, 3, 4, 5],
+          options: { inputAttr: { 'aria-label': 'Header' } },
         },
-        {
-          name: 'font',
-          acceptedValues: ['Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Verdana'],
-          options: {
-            inputAttr: {
-              'aria-label': 'Font family',
-            },
-          },
-        },
-        'separator',
-        'bold', 'italic', 'strike', 'underline', 'separator',
-        'alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'separator',
-        'color', 'background',
       ],
     },
-    onValueChanged({ component, value }) {
-      formatOutput(value, component.option('valueType'));
+    onValueChanged({ value }) {
+      updateValueContent(value);
     },
   }).dxHtmlEditor('instance');
 
-  $('.value-types').dxButtonGroup({
-    items: [{ text: 'Html' }, { text: 'Markdown' }],
-    selectedItemKeys: ['Html'],
-    onSelectionChanged(e) {
-      const valueType = e.addedItems[0].text.toLowerCase();
-      editorInstance.option({ valueType });
-      const value = editorInstance.option('value');
-      formatOutput(value, valueType);
-    },
-  });
-
-  formatOutput(markup, 'html');
+  updateValueContent(markup);
 });
-
-function prettierFormat(markup) {
-  return prettier.format(markup, {
-    parser: 'html',
-    plugins: prettierPlugins,
-  });
-}
