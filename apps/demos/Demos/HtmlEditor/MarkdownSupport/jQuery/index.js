@@ -15,7 +15,7 @@ $(() => {
       return result;
     },
     fromHtml(value) {
-      const result = window.unified()
+      const result = unified()
         .use(rehypeParse, { fragment: true })
         .use(rehypeRemark)
         .use(remarkStringify)
@@ -33,7 +33,7 @@ $(() => {
     toolbar: {
       items: [
         'undo', 'redo', 'separator',
-        'bold', 'italic',
+        'bold', 'italic', 'separator',
         {
           name: 'header',
           acceptedValues: [false, 1, 2, 3, 4, 5],

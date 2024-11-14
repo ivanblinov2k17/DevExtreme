@@ -2,90 +2,83 @@
   <div class="widget-container">
     <DxHtmlEditor
       v-model:value="valueContent"
-      :value-type="editorValueType"
       :height="300"
+      :converter="converter"
     >
       <DxToolbar>
         <DxItem name="undo"/>
         <DxItem name="redo"/>
         <DxItem name="separator"/>
-        <DxItem
-          name="size"
-          :accepted-values="sizeValues"
-          :options="fontSizeOptions"
-        />
-        <DxItem
-          name="font"
-          :accepted-values="fontValues"
-          :options="fontFamilyOptions"
-        />
-        <DxItem name="separator"/>
         <DxItem name="bold"/>
         <DxItem name="italic"/>
-        <DxItem name="strike"/>
-        <DxItem name="underline"/>
         <DxItem name="separator"/>
-        <DxItem name="alignLeft"/>
-        <DxItem name="alignCenter"/>
-        <DxItem name="alignRight"/>
-        <DxItem name="alignJustify"/>
-        <DxItem name="separator"/>
-        <DxItem name="color"/>
-        <DxItem name="background"/>
+        <DxItem
+          name="header"
+          :accepted-values="headerValues"
+          :options="headerOptions"
+        />
       </DxToolbar>
     </DxHtmlEditor>
 
     <div class="options">
-      <DxButtonGroup v-model:selected-items="selectedItems">
-        <DxButtonGroupItem text="Html"/>
-        <DxButtonGroupItem text="Markdown"/>
-      </DxButtonGroup>
+      <div class="value-title">
+        Contents of the value option
+      </div>
       <div
         class="value-content"
         tabindex="0"
-      >{{ prettierFormat(valueContent) }}</div>
+      >
+        {{ valueContent }}
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import {
   DxHtmlEditor,
   DxToolbar,
   DxItem,
 } from 'devextreme-vue/html-editor';
-import {
-  DxButtonGroup,
-  DxItem as DxButtonGroupItem,
-} from 'devextreme-vue/button-group';
-import * as prettier from 'prettier/standalone';
-import * as parserHtml from 'prettier/parser-html';
 import { markup } from './data.ts';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import rehypeParse from 'rehype-parse';
+import rehypeRemark from 'rehype-remark';
+import remarkStringify from 'remark-stringify';
 
 const valueContent = ref(markup);
-const selectedItems = ref([{ text: 'Html' }]);
-const sizeValues = ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'];
-const fontValues = ['Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Verdana'];
-const fontSizeOptions = { inputAttr: { 'aria-label': 'Font size' } };
-const fontFamilyOptions = { inputAttr: { 'aria-label': 'Font family' } };
+const headerValues = [false, 1, 2, 3, 4, 5];
+const headerOptions = { inputAttr: { 'aria-label': 'Font family' } };
+const converter = {
+  toHtml(value) {
+    const result = unified()
+      .use(remarkParse)
+      .use(remarkRehype)
+      .use(rehypeStringify)
+      .processSync(value)
+      .toString();
 
-const editorValueType = computed(() => selectedItems.value[0].text.toLowerCase());
+    return result;
+  },
+  fromHtml(value) {
+    const result = unified()
+      .use(rehypeParse, { fragment: true })
+      .use(rehypeRemark)
+      .use(remarkStringify)
+      .processSync(value)
+      .toString();
 
-function prettierFormat(text) {
-  if (editorValueType.value === 'html') {
-    return prettier.format(text, {
-      parser: 'html',
-      plugins: [parserHtml],
-    });
+    return result;
   }
-
-  return text;
-}
+};
 </script>
 <style>
-.dx-htmleditor-content img {
-  vertical-align: middle;
-  padding-right: 10px;
+.value-title {
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .value-content {
