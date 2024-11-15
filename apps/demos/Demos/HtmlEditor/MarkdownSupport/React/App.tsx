@@ -10,9 +10,13 @@ const headerOptions = {
 };
 const converter = {
   toHtml(value) {
+    // @ts-expect-error
     const result = unified()
+      // @ts-expect-error
       .use(remarkParse)
+      // @ts-expect-error
       .use(remarkRehype)
+      // @ts-expect-error
       .use(rehypeStringify)
       .processSync(value)
       .toString();
@@ -20,9 +24,13 @@ const converter = {
     return result;
   },
   fromHtml(value) {
+    // @ts-expect-error
     const result = unified()
+      // @ts-expect-error
       .use(rehypeParse)
+      // @ts-expect-error
       .use(rehypeRemark)
+      // @ts-expect-error
       .use(remarkStringify)
       .processSync(value)
       .toString();
