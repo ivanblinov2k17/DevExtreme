@@ -16,7 +16,7 @@ $(() => {
     },
     fromHtml(value) {
       const result = unified()
-        .use(rehypeParse, { fragment: true })
+        .use(rehypeParse)
         .use(rehypeRemark)
         .use(remarkStringify)
         .processSync(value)

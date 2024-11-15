@@ -40,14 +40,18 @@ import {
   DxToolbar,
   DxItem,
 } from 'devextreme-vue/html-editor';
-import { markup } from './data.ts';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
+// eslint-disable-next-line spellcheck/spell-checker
 import remarkRehype from 'remark-rehype';
+// eslint-disable-next-line spellcheck/spell-checker
 import rehypeStringify from 'rehype-stringify';
+// eslint-disable-next-line spellcheck/spell-checker
 import rehypeParse from 'rehype-parse';
+// eslint-disable-next-line spellcheck/spell-checker
 import rehypeRemark from 'rehype-remark';
 import remarkStringify from 'remark-stringify';
+import { markup } from './data.ts';
 
 const valueContent = ref(markup);
 const headerValues = [false, 1, 2, 3, 4, 5];
@@ -56,7 +60,9 @@ const converter = {
   toHtml(value) {
     const result = unified()
       .use(remarkParse)
+      // eslint-disable-next-line spellcheck/spell-checker
       .use(remarkRehype)
+      // eslint-disable-next-line spellcheck/spell-checker
       .use(rehypeStringify)
       .processSync(value)
       .toString();
@@ -65,14 +71,16 @@ const converter = {
   },
   fromHtml(value) {
     const result = unified()
-      .use(rehypeParse, { fragment: true })
+      // eslint-disable-next-line spellcheck/spell-checker
+      .use(rehypeParse)
+      // eslint-disable-next-line spellcheck/spell-checker
       .use(rehypeRemark)
       .use(remarkStringify)
       .processSync(value)
       .toString();
 
     return result;
-  }
+  },
 };
 </script>
 <style>
