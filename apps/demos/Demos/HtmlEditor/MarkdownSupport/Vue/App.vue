@@ -47,15 +47,9 @@ const headerValues = [false, 1, 2, 3, 4, 5];
 const headerOptions = { inputAttr: { 'aria-label': 'Font family' } };
 const converter = {
   toHtml(value) {
-    // @ts-expect-error
     const result = unified()
-      // @ts-expect-error
       .use(remarkParse)
-      // @ts-expect-error
-      // eslint-disable-next-line spellcheck/spell-checker
       .use(remarkRehype)
-      // @ts-expect-error
-      // eslint-disable-next-line spellcheck/spell-checker
       .use(rehypeStringify)
       .processSync(value)
       .toString();
@@ -63,15 +57,9 @@ const converter = {
     return result;
   },
   fromHtml(value) {
-    // @ts-expect-error
     const result = unified()
-      // @ts-expect-error
-      // eslint-disable-next-line spellcheck/spell-checker
       .use(rehypeParse)
-      // eslint-disable-next-line spellcheck/spell-checker
-      // @ts-expect-error
       .use(rehypeRemark)
-      // @ts-expect-error
       .use(remarkStringify)
       .processSync(value)
       .toString();
