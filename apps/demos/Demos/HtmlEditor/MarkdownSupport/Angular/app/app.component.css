@@ -1,6 +1,6 @@
-::ng-deep .dx-htmleditor-content img {
-  vertical-align: middle;
-  padding-right: 10px;
+::ng-deep .value-title {
+  font-size: 18px;
+  font-weight: 500;
 }
 
 ::ng-deep .value-content {

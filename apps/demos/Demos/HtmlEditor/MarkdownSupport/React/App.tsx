@@ -5,7 +5,7 @@ import { markup } from './data.ts';
 const headerValues = [false, 1, 2, 3, 4, 5];
 const headerOptions = {
   inputAttr: {
-    'aria-label': 'Font family',
+    'aria-label': 'Header',
   },
 };
 const converter = {

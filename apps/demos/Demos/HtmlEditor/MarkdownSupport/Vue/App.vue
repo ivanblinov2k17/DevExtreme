@@ -44,7 +44,7 @@ import { markup } from './data.ts';
 
 const valueContent = ref(markup);
 const headerValues = [false, 1, 2, 3, 4, 5];
-const headerOptions = { inputAttr: { 'aria-label': 'Font family' } };
+const headerOptions = { inputAttr: { 'aria-label': 'Header' } };
 const converter = {
   toHtml(value) {
     // @ts-expect-error

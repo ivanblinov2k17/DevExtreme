@@ -1,11 +1,13 @@
 import { NgModule, Component, enableProdMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import prettier from 'prettier/standalone';
-import parserHtml from 'prettier/parser-html';
-import { DxHtmlEditorModule, DxHtmlEditorTypes } from 'devextreme-angular/ui/html-editor';
-import { DxButtonGroupModule, DxButtonGroupTypes } from 'devextreme-angular/ui/button-group';
+import { DxHtmlEditorModule } from 'devextreme-angular/ui/html-editor';
 import { Service } from './app.service';
+
+interface Converter {
+  toHtml: (value: string) => string;
+  fromHtml: (value: string) => string;
+}
 
 if (!/localhost/.test(document.location.host)) {
   enableProdMode();
@@ -27,24 +29,41 @@ if (window && window.config.packageConfigPaths) {
 export class AppComponent {
   valueContent: string;
 
-  editorValueType: DxHtmlEditorTypes.MarkupType = 'html';
+  converter: Converter;
 
   constructor(service: Service) {
     this.valueContent = service.getMarkup();
-  }
 
-  onValueTypeChanged({ addedItems }: DxButtonGroupTypes.SelectionChangedEvent) {
-    this.editorValueType = addedItems[0].text.toLowerCase();
-  }
-
-  prettierFormat(markup: string) {
-    if (this.editorValueType === 'html') {
-      return prettier.format(markup, {
-        parser: 'html',
-        plugins: [parserHtml],
-      });
+    this.converter = {
+      toHtml(value) {
+        // @ts-expect-error
+        const result = unified()
+          // @ts-expect-error
+          .use(remarkParse)
+          // @ts-expect-error
+          .use(remarkRehype)
+          // @ts-expect-error
+          .use(rehypeStringify)
+          .processSync(value)
+          .toString();
+    
+        return result;
+      },
+      fromHtml(value) {
+        // @ts-expect-error
+        const result = unified()
+          // @ts-expect-error
+          .use(rehypeParse)
+          // @ts-expect-error
+          .use(rehypeRemark)
+          // @ts-expect-error
+          .use(remarkStringify)
+          .processSync(value)
+          .toString();
+    
+        return result;
+      },
     }
-    return markup;
   }
 }
 
@@ -52,7 +71,6 @@ export class AppComponent {
   imports: [
     BrowserModule,
     DxHtmlEditorModule,
-    DxButtonGroupModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
