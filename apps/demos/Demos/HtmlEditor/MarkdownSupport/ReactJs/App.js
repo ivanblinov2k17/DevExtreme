@@ -64,6 +64,9 @@ export default function App() {
             acceptedValues={headerValues}
             options={headerOptions}
           />
+          <Item name="separator" />
+          <Item name="orderedList" />
+          <Item name="bulletList" />
         </Toolbar>
       </HtmlEditor>
 

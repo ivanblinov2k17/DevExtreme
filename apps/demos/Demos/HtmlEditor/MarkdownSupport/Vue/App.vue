@@ -17,6 +17,9 @@
           :accepted-values="headerValues"
           :options="headerOptions"
         />
+        <DxItem name="separator"/>
+        <DxItem name="orderedList"/>
+        <DxItem name="bulletList"/>
       </DxToolbar>
     </DxHtmlEditor>
 
@@ -77,6 +80,11 @@ const converter = {
 };
 </script>
 <style>
+.dx-htmleditor-content img {
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
 .value-title {
   font-size: 18px;
   font-weight: 500;

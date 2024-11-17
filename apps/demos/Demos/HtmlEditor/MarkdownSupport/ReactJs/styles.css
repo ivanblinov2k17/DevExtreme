@@ -1,3 +1,8 @@
+.dx-htmleditor-content img {
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
 .value-title {
   font-size: 18px;
   font-weight: 500;
