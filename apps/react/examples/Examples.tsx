@@ -5,7 +5,10 @@ import NumberBox from 'devextreme-react/number-box';
 import AccordionExample from './accordion-example';
 import BoxExample from './box-example';
 import ChartExample from './chart-example';
+
 import DataGridExample from './data-grid-example';
+import DataGridSecondExample from './data-grid-example-second';
+
 // import DrawerExample from './drawer-example';
 import EditorExample from './editor-example';
 import Example from './example-block';
@@ -27,7 +30,7 @@ import ValidationExample from './validation-example';
 const Examples = () => {
     return (
         <div>
-            <AccordionExample />
+            {/* <AccordionExample />
 
             <BoxExample />
 
@@ -39,23 +42,24 @@ const Examples = () => {
                 <Button text="Button with style attr" style={{ backgroundColor: '#ffc' }} />
             </Example>
 
-            <ChartExample />
+            <ChartExample /> */}
 
             <DataGridExample />
+            <DataGridSecondExample />
 
             {/* <DateBoxExample /> */}
 
             {/* <DrawerExample /> */}
 
-            <EditorExample />
+            {/* <EditorExample /> */}
 
             {/* <FormExample /> */}
 
-            <ListExample />
+            {/* <ListExample /> */}
 
             {/* <MapExample /> */}
 
-            <Example title="DxNumberBox">
+            {/* <Example title="DxNumberBox">
                 <NumberBox
                     defaultValue={102.453}
                     step={10}
@@ -67,23 +71,23 @@ const Examples = () => {
 
             <PopupExample />
 
-            <RerenderedChartExample />
+            <RerenderedChartExample /> */}
 
             {/* <SlideOutViewExample /> */}
 
-            <ScrollViewExample />
+            {/* <ScrollViewExample />
 
             <TextBoxExample />
 
             <ToolbarExample />
 
-            <ValidationExample />
+            <ValidationExample /> */}
 
             {/* <SchedulerExample /> */}
 
-            <Example title="SelectBox example">
+            {/* <Example title="SelectBox example">
                 <SelectBoxExample />
-            </Example>
+            </Example> */}
 
             {/* <StandaloneValidatorExample /> */}
 
